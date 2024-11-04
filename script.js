@@ -95,6 +95,16 @@ function updateCartView() {
     priceEl.classList.add("cart__item_price");
     priceEl.innerHTML = `Price: <span class="cart__item_price_span">$${item.price}</span>`;
 
+    // Цвет товара
+    const colorEl = document.createElement("div");
+    colorEl.classList.add("cart__item_color");
+    colorEl.textContent = `Color: ${item.color}`;
+
+    // Размер товара
+    const sizeEl = document.createElement("div");
+    sizeEl.classList.add("cart__item_size");
+    sizeEl.textContent = `Size: ${item.size}`;
+
     // Количество с возможностью изменения
     const quantityEl = document.createElement("div");
     quantityEl.classList.add("cart__item_quantity");
@@ -112,7 +122,7 @@ function updateCartView() {
     removeButton.addEventListener("click", () => removeFromCart(item.id));
 
     // Добавляем элементы в структуру карточки товара в корзине
-    itemDetailsEl.append(titleEl, priceEl, quantityEl);
+    itemDetailsEl.append(titleEl, priceEl, colorEl, sizeEl, quantityEl);
     cartItemEl.append(imgEl, itemDetailsEl, removeButton);
     cartItemsContainer.appendChild(cartItemEl);
   });
@@ -120,13 +130,23 @@ function updateCartView() {
 
 // Обработчик клика по кнопке "Add to Cart"
 document.querySelectorAll(".items__img_hover_btn").forEach((button) => {
-  button.addEventListener("click", () => {
+  button.addEventListener("click", (e) => {
+    const itemCard = e.target.closest(".items"); // Ищем родительский элемент карточки товара
+
+    // Получаем данные товара из его элементов
     const item = {
-      id: button.dataset.id, // data-id товара
-      title: button.dataset.title, // Название товара
-      price: button.dataset.price, // Цена товара
-      img: button.dataset.img, // Путь к изображению товара
+      id: itemCard.getAttribute("data-id"),
+      img: itemCard.querySelector(".items__img img").src,
+      title: itemCard.querySelector(".item__description h2").textContent,
+      price: itemCard
+        .querySelector(".item_buttons")
+        .textContent.replace("$", ""),
+      color:
+        itemCard.querySelector(".item__color")?.textContent || "Default Color", // Используем текст или дефолтное значение
+      size:
+        itemCard.querySelector(".item__size")?.textContent || "Default Size", // Используем текст или дефолтное значение
     };
+
     addToCart(item);
   });
 });
