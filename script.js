@@ -6,6 +6,10 @@ const topEl = document.querySelector("div.top");
 const sectionItems = document.querySelector("section.section__items");
 const productEl = document.querySelector("div.product");
 
+// Секция корзины
+const cartItemsSection = document.querySelector(".cart__items");
+const cartItemsContainer = document.querySelector(".cart__items_grid");
+
 // Отображение/скрытие меню
 menuButton.addEventListener("click", function () {
   menuActive.classList.toggle("hidden");
@@ -27,6 +31,16 @@ const cartCountElement = document.querySelector(".nav__button.basket .cart");
 function updateCartCount() {
   const itemCount = cartItems.reduce((total, item) => total + item.quantity, 0);
   cartCountElement.textContent = itemCount;
+  toggleCartSection(); // Проверяем, нужно ли скрывать секцию корзины
+}
+
+// Функция для отображения/скрытия секции корзины
+function toggleCartSection() {
+  if (cartItems.length > 0) {
+    cartItemsSection.classList.remove("hidden"); // Показываем секцию, если корзина не пуста
+  } else {
+    cartItemsSection.classList.add("hidden"); // Скрываем секцию, если корзина пуста
+  }
 }
 
 // Функция для добавления товара в корзину
@@ -55,7 +69,6 @@ function removeFromCart(itemId) {
 
 // Функция для обновления отображения товаров в секции корзины
 function updateCartView() {
-  const cartItemsContainer = document.querySelector(".cart__items_grid");
   cartItemsContainer.innerHTML = ""; // Очищаем контейнер перед обновлением
 
   cartItems.forEach((item) => {
@@ -119,7 +132,7 @@ document.querySelectorAll(".items__img_hover_btn").forEach((button) => {
 });
 
 // Обработчик для изменения количества товаров через инпут
-document.querySelector(".cart__items_grid").addEventListener("input", (e) => {
+cartItemsContainer.addEventListener("input", (e) => {
   if (e.target.type === "number") {
     const itemId = e.target.dataset.id;
     const newQuantity = parseInt(e.target.value, 10);
