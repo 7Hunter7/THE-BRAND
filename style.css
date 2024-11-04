@@ -1,5 +1,10 @@
 @import url("https://fonts.googleapis.com/css2?family=Lato:wght@600;700;900&display=swap");
 
+:root {
+  --primary-color: #222;
+  --secondary-color: #f16d7f;
+  --font-family: "Lato", sans-serif;
+}
 * {
   padding: 0;
   margin: 0;
@@ -7,6 +12,7 @@
   text-decoration: none;
 }
 body {
+  font-family: var(--font-family);
   scroll-behavior: smooth;
   text-rendering: optimizeSpeed;
   background: #fff;
@@ -26,6 +32,15 @@ button {
   font-weight: 700;
   font-size: 32px;
   text-align: center;
+}
+.button {
+  border: 2px solid var(--secondary-color);
+  color: var(--secondary-color);
+  transition: all 0.3s;
+}
+.button:hover {
+  background-color: var(--secondary-color);
+  color: #fff;
 }
 .container_big {
   width: 1600px;
